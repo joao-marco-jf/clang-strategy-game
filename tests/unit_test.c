@@ -7,8 +7,9 @@
 
 unit_t *units = NULL;
 
-void alocate_unit_test() {
-    unit_t *unit = allocate_unit(22, 44, SOLDIER);
+void allocate_unit_test() {
+    unit_t *unit = NULL;
+    unit = allocate_unit(22, 44, SOLDIER);
     CU_ASSERT_PTR_NOT_NULL(unit);
     CU_ASSERT_EQUAL(unit->x, 22);
     CU_ASSERT_EQUAL(unit->y, 44);
@@ -26,7 +27,7 @@ void alocate_unit_test() {
     unit = NULL;
 }
 
-void insert_and_remove_unit_test(){
+void insert_unit_test(){
     unit_t *aux = units;
     insert_unit(units, 22, 44, EXPLORER);
 

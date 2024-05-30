@@ -22,7 +22,7 @@ void allocate_unit_test() {
     CU_ASSERT_EQUAL(unit->type, EXPLORER);    // Testa se 'unit->type' é EXPLORER;
     CU_ASSERT_PTR_NULL(unit->next);           // Testa se 'unit->next' é 'NULL';
     free(unit);                               // Libera memória;
-    unit = NULL; 
+    unit = NULL;                              // Altera 'unit' para 'NULL';
 }
 
 void insert_unit_test(){

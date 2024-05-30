@@ -27,12 +27,12 @@ int main() {
     return CU_get_error();
   }
 
-  if (NULL == CU_add_test(pSuite, "remove_unit_test", remove_unit_test)) {
+  if (NULL == CU_add_test(pSuite, "get_unit_test", get_unit_test)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
 
-  if (NULL == CU_add_test(pSuite, "get_unit_test", get_unit_test)) {
+  if (NULL == CU_add_test(pSuite, "remove_unit_test", remove_unit_test)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

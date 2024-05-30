@@ -1,6 +1,6 @@
 #include "unit.h"
 
-unit_t *alocate_unit(int x, int y, unit_e type){
+unit_t *allocate_unit(int x, int y, unit_e type){
     
 }
 

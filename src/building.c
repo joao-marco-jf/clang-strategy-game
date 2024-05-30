@@ -1,6 +1,6 @@
 #include "building.h"
 
-building_t *alocate_building(int x, int y, building_e type){
+building_t *allocate_building(int x, int y, building_e type){
 
 }
 

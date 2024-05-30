@@ -1,6 +1,6 @@
 #include "alliance.h"
 
-alliance_t *alocate_alliance(char name[15]){
+alliance_t *allocate_alliance(char name[15]){
 
 }
 

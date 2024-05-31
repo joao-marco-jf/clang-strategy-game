@@ -26,32 +26,28 @@ void allocate_unit_test() {
 }
 
 void insert_unit_test(){
-    unit_t *aux = units;
-    insert_unit(&units, 22, 44, EXPLORER);
+    unit_t *units = NULL;
+    insert_unit(&units, 22, 44, EXPLORER);          // Insere uma 'unit' na lista encadeada 'units'
 
-    CU_ASSERT_PTR_NOT_NULL(aux);
-    if(aux == NULL) return;
+    CU_ASSERT_PTR_NOT_NULL(units);                  // Verifica se a lista encadeada 'units' continua vazia
+    if(units == NULL) return;                       // Caso a 'units' esteja vazia o teste para nesse ponto
 
-    CU_ASSERT_EQUAL(aux->x, 22);
-    CU_ASSERT_EQUAL(aux->y, 44);
-    CU_ASSERT_EQUAL(aux->type, EXPLORER);
-    CU_ASSERT_PTR_NULL(aux->next);
+    CU_ASSERT_EQUAL(units->x, 22);                  // Testa se 'units->x' é 22;
+    CU_ASSERT_EQUAL(units->y, 44);                  // Testa se 'units->y' é 44;
+    CU_ASSERT_EQUAL(units->type, EXPLORER);         // Testa se 'units->type' é EXPLORER;
+    CU_ASSERT_PTR_NULL(units->next);                // Testa se 'unit->next' é 'NULL';
     
-    insert_unit(&units, 11, 22, SOLDIER);
+    insert_unit(&units, 11, 22, SOLDIER);           // Insere mais um 'unit' na lista encadeada 'units'
 
-    CU_ASSERT_EQUAL(aux->x, 11);
-    CU_ASSERT_EQUAL(aux->y, 22);
-    CU_ASSERT_EQUAL(aux->type, EXPLORER);
-    CU_ASSERT_PTR_NOT_NULL(aux->next);
+    CU_ASSERT_EQUAL(units->x, 11);                  // Testa se 'units->x' é 11;
+    CU_ASSERT_EQUAL(units->y, 22);                  // Testa se 'units->y' é 22;
+    CU_ASSERT_EQUAL(units->type, SOLDIER);          // Testa se 'units->type' é SOLDIER;
+    CU_ASSERT_PTR_NOT_NULL(units->next);            // Testa se 'unit->next' não é 'NULL';
 
-    if(aux->next == NULL) return;
-
-    aux = aux->next;
-
-    CU_ASSERT_EQUAL(aux->x, 22);
-    CU_ASSERT_EQUAL(aux->y, 44);
-    CU_ASSERT_EQUAL(aux->type, EXPLORER);
-    CU_ASSERT_PTR_NULL(aux->next);
+    CU_ASSERT_EQUAL(units->next->x, 22);            // Testa se 'units->next->x' é 22;
+    CU_ASSERT_EQUAL(units->next->y, 44);            // Testa se 'units->next->y' é 44;
+    CU_ASSERT_EQUAL(units->next->type, EXPLORER);   // Testa se 'units->next->type' é SOLDIER;
+    CU_ASSERT_PTR_NULL(units->next->next);          // Testa se 'unit->next->next' não é 'NULL';
 }
 
 void remove_unit_test(){

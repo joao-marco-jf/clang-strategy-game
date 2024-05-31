@@ -55,7 +55,10 @@ void remove_unit_test(){
     insert_unit(&units, 11, 22, SOLDIER);   // Insere um 'unit' na lista encadeada 'units'
     insert_unit(&units, 22, 44, EXPLORER);  // Insere mais um 'unit' na lista encadeada 'units'
 
-    if(units == NULL) return;               // Caso a 'units' esteja vazia o teste para nesse ponto
+    if(units == NULL) {                     // Caso a 'units' esteja vazia o teste para nesse ponto
+        CU_FAIL("Failed to insert units");
+        return;
+    };
 
     remove_unit(&units, 22, 44);            // Remove um 'unit' na lista encadeada 'units' (LIFO - Last in First out)
 

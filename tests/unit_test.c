@@ -37,7 +37,7 @@ void insert_unit_test(){
     CU_ASSERT_EQUAL(units->type, EXPLORER);         // Testa se 'units->type' é EXPLORER;
     CU_ASSERT_PTR_NULL(units->next);                // Testa se 'unit->next' é 'NULL';
     
-    insert_unit(&units, 11, 22, SOLDIER);           // Insere mais um 'unit' na lista encadeada 'units'
+    insert_unit(&units, 11, 22, SOLDIER);           // Insere mais um 'unit' na lista encadeada 'units' (LIFO - Last in First out)
 
     CU_ASSERT_EQUAL(units->x, 11);                  // Testa se 'units->x' é 11;
     CU_ASSERT_EQUAL(units->y, 22);                  // Testa se 'units->y' é 22;
@@ -51,9 +51,20 @@ void insert_unit_test(){
 }
 
 void remove_unit_test(){
+    unit_t *units = NULL;                   // Insere uma 'unit' na lista encadeada 'units'
+    insert_unit(&units, 11, 22, SOLDIER);   // Insere um 'unit' na lista encadeada 'units'
+    insert_unit(&units, 22, 44, EXPLORER);  // Insere mais um 'unit' na lista encadeada 'units'
 
-}
+    if(units == NULL) return;               // Caso a 'units' esteja vazia o teste para nesse ponto
 
-void get_unit_test(){
-  
+    remove_unit(&units, 22, 44);            // Remove um 'unit' na lista encadeada 'units' (LIFO - Last in First out)
+
+    CU_ASSERT_EQUAL(units->x, 11);          // Testa se 'units->x' é 11;
+    CU_ASSERT_EQUAL(units->y, 22);          // Testa se 'units->y' é 22;
+    CU_ASSERT_EQUAL(units->type, SOLDIER);  // Testa se 'units->type' é SOLDIER;
+    CU_ASSERT_PTR_NULL(units->next);        // Testa se 'unit->next' é 'NULL';
+
+    remove_unit(&units, 11, 22);            // Remove mais um 'unit' na lista encadeada 'units'
+
+    CU_ASSERT_PTR_NULL(units);              // Testa se 'units' é 'NULL';
 }

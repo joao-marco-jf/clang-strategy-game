@@ -11,7 +11,3 @@ void insert_building(building_t **buildings, int x, int y, building_e type){
 void remove_building(building_t **buildings, int x, int y){
 
 }
-
-void get_building(building_t *buildings, int x, int y){
-    
-}

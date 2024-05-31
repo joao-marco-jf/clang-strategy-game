@@ -11,7 +11,3 @@ void insert_faction(faction_t **factions, char name[15], int resources, int powe
 void remove_faction(faction_t **factions, char name[15]){
 
 }
-
-void get_faction(faction_t *factions, char name[15]){
-    
-}

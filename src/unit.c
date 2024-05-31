@@ -13,7 +13,11 @@ unit_t *allocate_unit(int x, int y, unit_e type){
 }
 
 void insert_unit(unit_t **units, int x, int y, unit_e type){
-
+    unit_t *new_unit = NULL;
+    new_unit = allocate_unit(x, y, type);
+    if(new_unit == NULL) return;
+    new_unit->next = *units;
+    *units = new_unit;
 }
 
 void remove_unit(unit_t **units, int x, int y){

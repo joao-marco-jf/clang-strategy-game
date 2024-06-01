@@ -10,6 +10,7 @@ faction_t *allocate_faction(char name[15], int resources, int power){
     strcpy(new_faction->name, name);
     new_faction->resources = resources;
     new_faction->power = power;
+    new_faction->next = NULL;
     return new_faction;
 }
 

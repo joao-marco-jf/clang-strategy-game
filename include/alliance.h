@@ -3,7 +3,7 @@
 
 typedef struct alliance_t {
     char name[15];
-    struct alliance *next;
+    struct alliance_t *next;
 } alliance_t;
 
 alliance_t *allocate_alliance(char name[15]);

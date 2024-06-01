@@ -1,7 +1,16 @@
+#include <stdio.h>
+#include<string.h>
+
 #include "faction.h"
 
 faction_t *allocate_faction(char name[15], int resources, int power){
-
+    faction_t *new_faction = NULL;
+    new_faction = (faction_t *) malloc(sizeof(faction_t));
+    if(new_faction == NULL) return NULL;
+    strcpy(new_faction->name, name);
+    new_faction->resources = resources;
+    new_faction->power = power;
+    return new_faction;
 }
 
 void insert_faction(faction_t **factions, char name[15], int resources, int power){

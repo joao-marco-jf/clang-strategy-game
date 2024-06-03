@@ -45,7 +45,7 @@ void insert_faction_test(){
     CU_ASSERT_EQUAL(factions->power, 22);               // Testa se 'factions->power' é 22;
     CU_ASSERT_PTR_NOT_NULL(factions->next);             // Testa se 'factions->next' não é 'NULL';
 
-    CU_ASSERT_STRING_EQUAL(factions->name, "Facção 01");       // Testa se 'faction->name' é "Facção 02";
+    CU_ASSERT_STRING_EQUAL(factions->next->name, "Facção 01");       // Testa se 'faction->name' é "Facção 02";
     CU_ASSERT_EQUAL(factions->next->resources, 22);     // Testa se 'factions->next->resources' é 22;
     CU_ASSERT_EQUAL(factions->next->power, 44);         // Testa se 'factions->next->power' é 44;
     CU_ASSERT_PTR_NULL(factions->next->next);           // Testa se 'factions->next->next' não é 'NULL';

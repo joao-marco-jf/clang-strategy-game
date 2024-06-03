@@ -4,7 +4,7 @@
 unit_t *allocate_unit(int x, int y, unit_e type){
     unit_t *new_unit = NULL;
     new_unit = (unit_t *) malloc(sizeof(unit_t));
-    if(new_unit == NULL) return;
+    if(new_unit == NULL) return NULL;
     new_unit->x = x;
     new_unit->y = y;
     new_unit->type = type;

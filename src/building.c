@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "building.h"
 
 building_t *allocate_building(int x, int y, building_e type){
     building_t *new_building = NULL;
     new_building = (building_t *) malloc(sizeof(building_t));
-    if(new_building == NULL) return;
+    if(new_building == NULL) return NULL;
     new_building->x = x;
     new_building->y = y;
     new_building->type = type;

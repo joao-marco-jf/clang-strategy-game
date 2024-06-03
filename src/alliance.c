@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -13,9 +14,15 @@ alliance_t *allocate_alliance(char name[15]){
 }
 
 void insert_alliance(alliance_t **alliances, char name[15]){
-
+    alliance_t *new_alliance = NULL;
+    new_alliance = allocate_alliance(name);
+    if(new_alliance == NULL) return;
+    new_alliance->next = *alliances;
+    *alliances = new_alliance;
 }
 
 void remove_alliance(alliance_t **alliances, char name[15]){
-
+    alliance_t *aux = *alliances;
+    (*alliances) = (*alliances)->next;
+    free(aux);
 }

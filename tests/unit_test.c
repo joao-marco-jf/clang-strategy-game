@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "CUnit/Basic.h"
-#include "unit_test.h"
+#include "tests/unit_test.h"
 #include "unit.h"
 
 unit_t *units = NULL;

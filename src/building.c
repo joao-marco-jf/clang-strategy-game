@@ -21,7 +21,5 @@ void insert_building(building_t **buildings, int x, int y, building_e type){
 }
 
 void remove_building(building_t **buildings, int x, int y){
-    building_t *aux = *buildings;
-    *buildings = (*buildings)->next;
-    free(aux);
+    
 }

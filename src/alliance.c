@@ -22,7 +22,5 @@ void insert_alliance(alliance_t **alliances, char name[15]){
 }
 
 void remove_alliance(alliance_t **alliances, char name[15]){
-    alliance_t *aux = *alliances;
-    (*alliances) = (*alliances)->next;
-    free(aux);
+    
 }

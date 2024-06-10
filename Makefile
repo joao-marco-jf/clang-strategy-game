@@ -12,7 +12,7 @@ OUT_DIR = out
 BIN_DIR = bin
 
 # Arquivos fonte e objetos
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+SRCS = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OUT_DIR)/%.o, $(filter-out $(SRC_DIR)/main.c, $(SRCS)))
 
 MAIN_OBJ = $(OUT_DIR)/main.o
@@ -21,7 +21,7 @@ MAIN_OBJ = $(OUT_DIR)/main.o
 EXEC = $(BIN_DIR)/main
 
 # Arquivos fonte e objetos dos testes
-TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
+TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/**/*.c)
 TEST_OBJS = $(patsubst $(TEST_DIR)/%.c, $(OUT_DIR)/%.o, $(TEST_SRCS))
 
 # Alvo padrão
@@ -57,4 +57,3 @@ clean:
 	rm -rf $(OUT_DIR) $(BIN_DIR)
 
 .PHONY: all clean test install_cunit
-

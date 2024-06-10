@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "CUnit/Basic.h"
-#include "building_test.h"
+#include "tests/building_test.h"
 #include "building.h"
 
 building_t *buildings = NULL;

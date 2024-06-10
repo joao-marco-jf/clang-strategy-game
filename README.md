@@ -33,3 +33,7 @@
 </tr>
 
 </table>
+
+
+Leitura do arquivo
+O arquivo deve conter em suas primeiras duas linhas o tamanho do mapa e a quantidade de fases respectivamente.

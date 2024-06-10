@@ -1,9 +1,9 @@
 #include "CUnit/Basic.h"
 
-#include "unit_test.h"
-#include "building_test.h"
-#include "faction_test.h"
-#include "alliance_test.h"
+#include "tests/unit_test.h"
+#include "tests/building_test.h"
+#include "tests/faction_test.h"
+#include "tests/alliance_test.h"
 
 int main() {
   if (CUE_SUCCESS != CU_initialize_registry())

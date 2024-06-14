@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "CUnit/Basic.h"
 #include "tests/unit_test.h"
-#include "unit.h"
+#include "game/unit.h"
 
 unit_t *units = NULL;
 

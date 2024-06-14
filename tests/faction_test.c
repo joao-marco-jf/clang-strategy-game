@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "CUnit/Basic.h"
 #include "tests/faction_test.h"
-#include "faction.h"
+#include "game/faction.h"
 
 faction_t *factions = NULL;
 

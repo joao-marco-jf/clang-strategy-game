@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "board.h"
+#include "game/board.h"
 
 board_poss_t *allocate_board(int line, int column, unit_t *p_unit_t, building_t *p_building_t, faction_t *p_faction_t)
 {

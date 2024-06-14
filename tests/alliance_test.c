@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "CUnit/Basic.h"
 #include "tests/alliance_test.h"
-#include "alliance.h"
+#include "game/alliance.h"
 
 alliance_t *alliances = NULL;
 

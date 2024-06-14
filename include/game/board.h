@@ -1,9 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "game/faction.h"
-#include "game/building.h"
-#include "game/unit.h"
+#include "faction.h"
+#include "building.h"
+#include "unit.h"
 
 typedef struct board_poss_t
 {

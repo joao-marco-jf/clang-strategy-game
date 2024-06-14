@@ -52,7 +52,20 @@ int read_others(FILE *file, char *params) {
     return 0;
 }
 
+#include <stdio.h>
+#include <string.h>
+
+#include "game/board.h"
+#include "game/faction.h"
+#include "game/building.h"
+#include "game/unit.h"
+
 int read_all_file(FILE *file) {
+    board_poss_t* board = NULL;
+    faction_t* factions = NULL;
+    building_t* buildings = NULL;
+    unit_t* units = NULL;
+
     int rows, columns;
     if (read_dimensions(file, &rows, &columns) != 0) {
         printf("Failed to read the dimensions of the board.\n");
@@ -106,17 +119,24 @@ int read_all_file(FILE *file) {
                 // Code to handle the combat
             }
         }
+        /**
+         * Função responsável por lidar com a ação "pos".
+         * 
+         * @param action Ação a ser executada.
+         * @param file Arquivo de entrada.
+         * @param units Lista de unidades.
+         * @param factions Lista de facções.
+         * @param num_factions Número de facções restantes à serem alocadas.
+         */
         else if(strcmp(action, "pos") == 0){
             int params[6];
             if (read_others(file, params) == 0) {
                 if(num_factions <= 0){
-                    printf("Pos unit %s on board.\n", part);
+                    insert_unit(&units, params[0], params[1], params[2]);
                 } else {
-                    printf("Pos faction %s on board.\n", part);
+                    insert_faction(&factions, part, 500, 0);
                     num_factions--;
                 }
-                
-                // Code to handle the other actions
             }
         }
         else if(strcmp(action, "move") == 0){

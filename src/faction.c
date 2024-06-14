@@ -25,6 +25,8 @@ faction_t *allocate_faction(char name[15], int resources, int power){
     new_faction->resources = resources;
     new_faction->power = power;
     new_faction->next = NULL;
+    new_faction->units = NULL;
+    new_faction->buildings = NULL;
     return new_faction;
 }
 

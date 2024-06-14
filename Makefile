@@ -45,8 +45,8 @@ $(OUT_DIR)/%.o: $(TEST_DIR)/%.c
 # Compila e executa os testes
 test: $(OBJS) $(TEST_OBJS)
 	mkdir -p $(BIN_DIR)
-	$(CXX) $(TEST_OBJS) $(OBJS) -o $(BIN_DIR)/test_exec -lcunit
-	./$(BIN_DIR)/test_exec
+	$(CXX) $(TEST_OBJS) $(OBJS) -o $(BIN_DIR)/test -lcunit
+	./$(BIN_DIR)/test
 
 # Instala a biblioteca CUnit (supondo um sistema baseado em Debian)
 install_cunit:

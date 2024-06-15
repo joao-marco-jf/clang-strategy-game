@@ -61,7 +61,7 @@ int read_others(FILE *file, char *params) {
 #include "game/unit.h"
 
 int read_all_file(FILE *file) {
-    board_poss_t* board = NULL;
+    board_poss_t* board = create_board();
     faction_t* factions = NULL;
     building_t* buildings = NULL;
     unit_t* units = NULL;

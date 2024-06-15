@@ -15,10 +15,11 @@
  * @return Um ponteiro para a unidade recém-alocada.
  *         Retorna NULL se a alocação de memória falhar.
  */
-unit_t *allocate_unit(int x, int y, unit_e type){
+unit_t *allocate_unit(int x, int y, char name[15], unit_e type){                  //Esta função aloca memória para uma nova instância de uma unidade, inicializa suas coordenadas e tipo.
     unit_t *new_unit = NULL;
     new_unit = (unit_t *) malloc(sizeof(unit_t));
     if(new_unit == NULL) return NULL;
+    strcpy(new_unit->name, name);
     new_unit->x = x;
     new_unit->y = y;
     new_unit->type = type;
@@ -34,9 +35,9 @@ unit_t *allocate_unit(int x, int y, unit_e type){
  * @param y A coordenada y da unidade.
  * @param type O tipo da unidade.
  */
-void insert_unit(unit_t **units, int x, int y, unit_e type){
+void insert_unit(unit_t **units, int x, int y, char name[15], unit_e type){      //Esta função insere uma nova unidade no início da lista ligada de unidades.
     unit_t *new_unit = NULL;
-    new_unit = allocate_unit(x, y, type);
+    new_unit = allocate_unit(x, y, name, type);
     if(new_unit == NULL) return;
     new_unit->next = *units;
     *units = new_unit;

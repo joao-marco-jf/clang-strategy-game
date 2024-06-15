@@ -17,7 +17,7 @@
  * @param power O poder da facção.
  * @return Um ponteiro para a nova facção alocada.
  */
-faction_t *allocate_faction(char name[15], int resources, int power){
+faction_t *allocate_faction(char name[15], int resources, int power){                 //Esta função aloca memória para uma nova instância de uma aliança, inicializa seu nome e a insere na lista ligada.
     faction_t *new_faction = NULL;
     new_faction = (faction_t *) malloc(sizeof(faction_t));
     if(new_faction == NULL) return NULL;
@@ -38,7 +38,7 @@ faction_t *allocate_faction(char name[15], int resources, int power){
  * @param resources Os recursos da facção.
  * @param power O poder da facção.
  */
-void insert_faction(faction_t **factions, char name[15], int resources, int power){
+void insert_faction(faction_t **factions, char name[15], int resources, int power){  //Esta função insere uma nova facção no início da lista ligada de facções.
     faction_t *new_faction = NULL;
     new_faction = allocate_faction(name, resources, power);
     if(new_faction == NULL) return;

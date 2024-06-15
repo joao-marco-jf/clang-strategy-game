@@ -50,5 +50,20 @@ void insert_unit(unit_t **units, int x, int y, unit_e type){
  * @param y A coordenada y da unidade a ser removida.
  */
 void remove_unit(unit_t **units, int x, int y){
-    // TODO: Implementar a função remove_unit
+    unit_t *current = *units;
+    unit_t *previous = NULL;
+    while(current != NULL){
+        if(current->x == x && current->y == y){
+            if(previous == NULL){
+                *units = current->next;
+            }
+            else{
+                previous->next = current->next;
+            }
+            free(current);
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
 }

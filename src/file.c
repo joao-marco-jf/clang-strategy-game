@@ -46,6 +46,26 @@ int read_combat(FILE *file, char *enemy_name, int *self_value, int *enemy_value)
     return 0;
 }
 
+int read_pos_faction(FILE *file, int *params){
+    if(fscanf(file, "%i %i", &params[0], &params[1]) != 2) return 1;
+    return 0;
+}
+
+int read_pos_unit(FILE *file, int *params){
+    if(fscanf(file, "%i %i %i", &params[0], &params[1], &params[2]) != 3) return 1;
+    return 0;
+}
+
+int read_building(FILE *file, int *params){
+    if(fscanf(file, "%i %i %i %i", &params[0], &params[1], &params[2], &params[3]) != 4) return 1;
+    return 0;
+}
+
+int read_move(FILE *file, int *params){
+    if(fscanf(file, "%i %i %i", &params[0], &params[1], &params[2]) != 3) return 1;
+    return 0;
+}
+
 int read_others(FILE *file, char *params) {
     int index = 0;
     while (fscanf(file, "%i ", &params[index]) == 1);
@@ -61,16 +81,20 @@ int read_others(FILE *file, char *params) {
 #include "game/unit.h"
 
 int read_all_file(FILE *file) {
-    board_poss_t* board = NULL;
-    faction_t* factions = NULL;
-    building_t* buildings = NULL;
-    unit_t* units = NULL;
-
     int rows, columns;
     if (read_dimensions(file, &rows, &columns) != 0) {
         printf("Failed to read the dimensions of the board.\n");
         return 1;
     }
+
+    board_t board[columns][rows];
+    init_board(rows, columns, board);
+
+    faction_t* factions = NULL;
+    building_t* buildings = NULL;
+    unit_t* units = NULL;
+
+    alliance_t* alliances = NULL;
 
     int num_factions;
     if (read_num_factions(file, &num_factions) != 0) {
@@ -78,7 +102,7 @@ int read_all_file(FILE *file) {
         return 1;
     }
 
-    char part[10];
+    char part[15];
     char action[10];
 
     while (!feof(file)) {
@@ -119,31 +143,38 @@ int read_all_file(FILE *file) {
                 // Code to handle the combat
             }
         }
-        /**
-         * Função responsável por lidar com a ação "pos".
-         * 
-         * @param action Ação a ser executada.
-         * @param file Arquivo de entrada.
-         * @param units Lista de unidades.
-         * @param factions Lista de facções.
-         * @param num_factions Número de facções restantes à serem alocadas.
-         */
         else if(strcmp(action, "pos") == 0){
             int params[6];
-            if (read_others(file, params) == 0) {
-                if(num_factions <= 0){
-                    insert_unit(&units, params[0], params[1], params[2]);
-                } else {
-                    insert_faction(&factions, part, 500, 0);
+            if(num_factions <= 0){
+                if(read_pos_unit(file, params) == 0){
+                    printf("Insert unit %s on board in %i, %i, %i.\n", part, params[0], params[1], params[2]);
+                    insert_unit_on_board(rows, columns, board, &units, params[0], params[1], params[2]);
+
+                    //Adicionar a unidade a faction
+
+                    print_board(rows, columns, board);
+                    printf("\n");
+                }
+            }
+            else {
+                if (read_pos_faction(file, params) == 0){
+                    printf("Insert faction %s on board in %i, %i.\n", part, params[0], params[1]);
+                    insert_faction_on_board(rows, columns, board, &factions, part, params[0], params[1]);
+                    print_board(rows, columns, board);
+                    printf("\n");
                     num_factions--;
                 }
             }
         }
         else if(strcmp(action, "move") == 0){
             int params[6];
-            if (read_others(file, params) == 0) {
-                printf("Move unit %s.\n", part);
-                // Code to handle the other actions
+            if (read_move(file, params) == 0) {
+                printf("Move unit %s to %i %i.\n", part, params[0], params[1]);
+
+                //Implemente a remoção da unidade da posição anterior
+                //Implemente a inserção da unidade na nova posição
+
+                printf("\n");
             }
         }
         else if(strcmp(action, "coleta") == 0){
@@ -156,8 +187,10 @@ int read_all_file(FILE *file) {
         else if(strcmp(action, "constroi") == 0){
             int params[6];
             if (read_others(file, params) == 0) {
-                printf("Build a building to %s faction.\n", part);
-                // Code to handle the other actions
+                printf("Build a building to %s faction in %i %i.\n", part, params[0], params[1]);
+                insert_building_on_board(rows, columns, board, &buildings, params[0], params[1], params[2]);
+                print_board(rows, columns, board);
+                printf("\n");
             }
         }
         else if (strcmp(action, "defende") == 0) {

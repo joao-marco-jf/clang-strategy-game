@@ -4,89 +4,65 @@
 
 #include "game/board.h"
 
-board_poss_t *create_board()
-{
-    board_poss_t *new_board_poss = NULL;
-    new_board_poss = (board_poss_t *) malloc(sizeof(board_poss_t));
-    if(new_board_poss == NULL) return NULL;
-    new_board_poss->line = -1;
-    new_board_poss->column = -1;
-    new_board_poss->p_unit_t = NULL;
-    new_board_poss->p_building_t = NULL;
-    new_board_poss->p_faction_t = NULL;
-    new_board_poss->right = NULL;
-    new_board_poss->bellow = NULL;
-    return new_board_poss;
+void init_board(int lines, int columns, board_t board[lines][columns]){
+    for(int i = 0; i < lines; i++){
+        for(int j = 0; j < columns; j++){
+            board[i][j].p_faction_t = NULL;
+            board[i][j].p_building_t = NULL;
+            board[i][j].p_unit_t = NULL;
+        }
+    }
 }
 
-board_poss_t *allocate_board(int line, int column, unit_t *p_unit_t, building_t *p_building_t, faction_t *p_faction_t)
-{
-    board_poss_t *new_board_poss = NULL;
-    new_board_poss = (board_poss_t *) malloc(sizeof(board_poss_t));
-    if(new_board_poss == NULL) return NULL;
-    new_board_poss->line = line;
-    new_board_poss->column = column;
-    new_board_poss->p_unit_t = p_unit_t;
-    new_board_poss->p_building_t = p_building_t;
-    new_board_poss->p_faction_t = p_faction_t;
-    new_board_poss->right = NULL;
-    new_board_poss->bellow = NULL;
-    return new_board_poss;
+void print_board(int lines, int columns, board_t board[lines][columns]){
+    for(int i = 0; i < lines; i++){
+        for(int j = 0; j < columns; j++){
+            if(board[i][j].p_faction_t != NULL && board[i][j].p_building_t != NULL && board[i][j].p_unit_t != NULL){
+                printf("[3]");
+            }
+            else if(board[i][j].p_faction_t != NULL && board[i][j].p_building_t != NULL){
+                printf("[2]");
+            }
+            else if(board[i][j].p_faction_t != NULL && board[i][j].p_unit_t != NULL){
+                printf("[2]");
+            }
+            else if(board[i][j].p_building_t != NULL && board[i][j].p_unit_t != NULL){
+                printf("[2]");
+            }
+            else if(board[i][j].p_faction_t != NULL){
+                printf("[F]", board[i][j].p_faction_t->name);
+            }
+            else if(board[i][j].p_building_t != NULL){
+                printf("[B]");
+            }
+            else if(board[i][j].p_unit_t != NULL){
+                printf("[U]");
+            }
+            else{
+                printf("[ ]");
+            }
+        }
+        printf("\n");
+    }
 }
 
-void insert_board(int column_lim, int line_lim, board_poss_t** board, int line, int column, unit_t* p_unit_t, building_t* p_building_t, faction_t* p_faction_t)
-{   
-    board_poss_t* new_board_poss = allocate_board(line, column, p_unit_t, p_building_t, p_faction_t);
-    if(new_board_poss == NULL) return;
+void insert_faction_on_board(int lines, int columns, board_t board[columns][lines], faction_t** factions, char name[15], int x, int y){
+    insert_faction(*(&factions), name, 100, 100);
+    board[x][y].p_faction_t = factions;
+}
 
-    //CASO 0
-    board_poss_t* aux = *board;
-    if(aux->line == -1 && aux->column == -1)
-    {
-        *board = new_board_poss;
-        return;
-    }
+void insert_building_on_board(int lines, int columns, board_t board[columns][lines], building_t** buildings, int x, int y, building_e type){
+    insert_building(*(&buildings), x, y, type);
+    board[x][y].p_building_t = buildings;
+}
 
-    //CASO 1
-    if(line == 0 && column == 0)
-    {
-        (*board)->right = new_board_poss;
-        (*board)->bellow = new_board_poss;
-        return;
-    }
+void insert_unit_on_board(int lines, int columns, board_t board[columns][lines], unit_t** units, int x, int y, unit_e type){
+    insert_unit(*(&units), x, y, type);
+    board[x][y].p_unit_t = units;
+}
 
-    //CASO 2
-    if(line == 0)
-    {
-        while(aux->right->column < column){
-            aux = aux->right;
-        }
-        (*board)->bellow = new_board_poss;
-        aux->right = new_board_poss;
-        return;
-    }
 
-    //CASO 3
-    if(column == 0)
-    {
-        while(aux->bellow->line < line)
-        {
-            aux = aux->bellow;
-        }
-        (*board)->right = new_board_poss;
-        aux->bellow = new_board_poss;
-        return;
-    }
-
-    //CASO 4
-    for(int i = 0; i < line - 1; i++)
-    {
-        aux = aux->bellow;
-    }
-    for(int i = 0; i < column - 1; i++)
-    {
-        aux = aux->right;
-    }
-    new_board_poss->right = aux->right;
-    aux->right = new_board_poss;
+void remove_unit_on_board(int lines, int columns, board_t board[columns][lines], unit_t** units, int x, int y){
+    remove_unit(*(&units), x, y);
+    board[x][y].p_unit_t = NULL;
 }

@@ -1,8 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "file.h"
+#include "include.h"
 
 int main() {
     FILE *file = fopen("entrada.txt", "r");

@@ -3,11 +3,7 @@
  * @brief Implementação das funções relacionadas às facções do jogo.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "game/faction.h"
+#include "faction.h"
 
 /**
  * @brief Aloca memória para uma nova facção e inicializa seus atributos.
@@ -46,12 +42,21 @@ void insert_faction(faction_t **factions, char name[15], int resources, int powe
     *factions = new_faction;
 }
 
-/**
- * @brief Remove uma facção da lista de facções.
- * 
- * @param factions Um ponteiro para a lista de facções.
- * @param name O nome da facção a ser removida.
- */
-void remove_faction(faction_t **factions, char name[15]){
-    // TODO: Implementar a função remove_faction   
+faction_t *get_faction(faction_t **factions, char name[2]){
+    faction_t *current = *factions;
+    while(current != NULL){
+        if(strcmp(current->name, name) == 0){
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+void free_factions(faction_t **factions){
+    while(*factions != NULL){
+        faction_t *temp = *factions;
+        *factions = (*factions)->next;
+        free(temp);
+    }
 }

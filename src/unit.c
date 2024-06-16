@@ -3,8 +3,7 @@
  * @brief Implementação das funções relacionadas às unidades.
  */
 
-#include <stdlib.h>
-#include "game/unit.h"
+#include "unit.h"
 
 /**
  * @brief Aloca memória para uma nova unidade e inicializa suas propriedades.
@@ -44,6 +43,24 @@ void insert_unit(unit_t **units, int x, int y, char name[15], unit_e type){     
 }
 
 /**
+ * @brief Função que retorna um ponteiro para a unidade com o nome especificado.
+ *
+ * @param units Um ponteiro para a lista de unidades.
+ * @param name O nome da unidade a ser procurada.
+ * @return Um ponteiro para a unidade encontrada ou NULL se a unidade não for encontrada.
+ */
+unit_t *get_unit(unit_t **units, char name[15]){
+    unit_t *current = *units;
+    while(current != NULL){
+        if(strcmp(current->name, name) == 0){
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+/**
  * @brief Remove uma unidade da lista de unidades.
  * 
  * @param units Um ponteiro para o ponteiro da lista de unidades.
@@ -66,5 +83,18 @@ void remove_unit(unit_t **units, int x, int y){
         }
         previous = current;
         current = current->next;
+    }
+}
+
+/**
+ * @brief a memória alocada para uma lista encadeada de unidades.
+ *
+ * @param units Ponteiro para o ponteiro da lista de unidades.
+ */
+void free_units(unit_t **units){
+    while(*units != NULL){
+        unit_t *temp = *units;
+        *units = (*units)->next;
+        free(temp);
     }
 }

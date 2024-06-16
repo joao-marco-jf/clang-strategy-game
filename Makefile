@@ -25,7 +25,7 @@ TEST_SRCS = $(wildcard $(TEST_DIR)/*.c) $(wildcard $(TEST_DIR)/**/*.c)
 TEST_OBJS = $(patsubst $(TEST_DIR)/%.c, $(OUT_DIR)/%.o, $(TEST_SRCS))
 
 # Alvo padrão
-all: $(EXEC) test
+all: $(EXEC)
 
 # Compila o executável principal
 $(EXEC): $(OBJS) $(MAIN_OBJ)

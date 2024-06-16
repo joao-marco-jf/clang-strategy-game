@@ -3,11 +3,7 @@
  * @brief Implementação das funções relacionadas às alianças do jogo.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "game/alliance.h"
+#include "alliance.h"
 
 /**
  * @brief Aloca memória para uma nova aliança e inicializa seus atributos.
@@ -38,12 +34,13 @@ void insert_alliance(alliance_t **alliances, char name[15]){
     *alliances = new_alliance;
 }
 
-/**
- * @brief Remove uma aliança da lista de alianças.
- * 
- * @param alliances Um ponteiro para o ponteiro da lista de alianças.
- * @param name O nome da aliança a ser removida.
- */
-void remove_alliance(alliance_t **alliances, char name[15]){
-    
+void free_alliances(alliance_t **alliances){
+    alliance_t *current = *alliances;
+    alliance_t *next = NULL;
+    while(current != NULL){
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    *alliances = NULL;
 }

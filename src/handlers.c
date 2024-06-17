@@ -160,11 +160,27 @@ void handle_move(board_t *board, unit_t **units, char part[MAX_PART_LEN], int *p
         return;
     }
 
-    faction_t *faction = get_faction_board(board, unit->x, unit->y);
-    building_t *building = get_building_board(board, unit->x, unit->y);
+    faction_t *faction_on = get_faction_board(board, unit->x, unit->y);
+    building_t *building_on = get_building_board(board, unit->x, unit->y);
+    unit_t *unit_on = get_unit_board(board, unit->x, unit->y);
+    unit_t *unit1_on = get_unit1_board(board, unit->x, unit->y);
+    unit_t *unit2_on = get_unit2_board(board, unit->x, unit->y);
 
     remove_node(board, unit->x, unit->y);
-    if(faction || building) insert_node(board, unit->x, unit->y, NULL, building, faction);
+    insert_node(board, unit->x, unit->y, NULL, building_on, faction_on);
+    if(strcmp(unit->name, unit_on->name) == 0){
+        insert_node(board, unit->x, unit->y, unit1_on, NULL, NULL);
+        insert_node(board, unit->x, unit->y, unit2_on, NULL, NULL);
+    }
+    else if(strcmp(unit->name, unit1_on->name) == 0){
+        insert_node(board, unit->x, unit->y, unit_on, NULL, NULL);
+        insert_node(board, unit->x, unit->y, unit2_on, NULL, NULL);
+    }
+    else if(strcmp(unit->name, unit2_on->name) == 0){
+        insert_node(board, unit->x, unit->y, unit_on, NULL, NULL);
+        insert_node(board, unit->x, unit->y, unit1_on, NULL, NULL);
+    }
+    
     insert_node(board, params[1], params[2], unit, NULL, NULL);
     unit->x = params[1];
     unit->y = params[2];

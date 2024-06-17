@@ -40,10 +40,13 @@ int read_building(FILE *file, int *params);
 int read_move(FILE *file, int *params);
 int read_collect(FILE *file, int *params);
 int read_defend(FILE *file, int *params);
+int read_win(FILE *file, int* type_a, char name_b[15], int* type_b);
+int read_lose(FILE *file, int* type_a, char name_b[15], int* type_b);
+int read_earn(FILE *file, int* param);
 int read_all_file(FILE *file);
 
 // Handlers
-void handle_alliance(char *part, char *faction);
+void handle_alliance(faction_t **factions, char *part, char *faction);
 void handle_attack(faction_t **factions, char *part, char *param);
 void handle_combat(char *part, char *enemy_name, int self_value, int enemy_value);
 void handle_position_faction(board_t **board, faction_t **factions, char *part, int *params);

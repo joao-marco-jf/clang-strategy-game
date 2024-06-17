@@ -11,9 +11,23 @@
 
 history_t history = {"", "", 0};
 
-void handle_alliance(char *part, char *faction) {
-    printf("Aliança entre %s e %s\n", part, faction);
-    // Código para lidar com a aliança
+void handle_alliance(faction_t **factions, char *part, char *faction) {
+    FILE *log_file = fopen("saida.txt", "a");
+
+    faction_t *faction0 = get_faction(factions, part);
+    faction_t *faction1 = get_faction(factions, faction);
+    insert_alliance(&(faction0->alliance), faction);
+    insert_alliance(&(faction1->alliance), part);
+
+    int temp0 = faction0->power;
+    faction0->power += faction1->power;
+    faction1->power += temp0;
+
+    fprintf(log_file, "Aliança entre %s e %s realizada com sucesso.\n", faction0->name, faction1->name);
+    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction0->name, faction0->power);
+    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction1->name, faction1->power);
+
+    fclose(log_file);
 }
 
 /**
@@ -31,8 +45,9 @@ void handle_alliance(char *part, char *faction) {
  * @param params Um array de inteiros representando parâmetros adicionais.
  */
 void handle_attack(faction_t **factions, char *part, char *param) {
+    FILE *log_file = fopen("saida.txt", "a");
     // Imprime a mensagem de ataque
-    printf("A facção %s ataca %s.\n", part, param);
+    fprintf(log_file, "A facção %s ataca %s.\n", part, param);
     
     // Gera uma quantidade aleatória de recursos roubados
     int random_resources = rand() % 50;
@@ -43,7 +58,7 @@ void handle_attack(faction_t **factions, char *part, char *param) {
 
     // Verifica se as facções foram encontradas
     if(attacking_faction == NULL || defending_faction == NULL) {
-        printf("Facção não encontrada.\n");
+        fprintf(log_file, "Facção não encontrada.\n");
         return;
     }
 
@@ -57,13 +72,17 @@ void handle_attack(faction_t **factions, char *part, char *param) {
     defending_faction->resources -= random_resources;
 
     // Imprime os recursos atualizados das facções
-    printf("A facção %s agora tem %d recursos.\n", attacking_faction->name, attacking_faction->resources);
-    printf("A facção %s agora tem %d recursos.\n", defending_faction->name, defending_faction->resources);
+    fprintf(log_file, "A facção %s agora tem %d recursos.\n", attacking_faction->name, attacking_faction->resources);
+    fprintf(log_file, "A facção %s agora tem %d recursos.\n", defending_faction->name, defending_faction->resources);
+
+    fclose(log_file);
 }
 
 void handle_combat(char *part, char *enemy_name, int self_value, int enemy_value) {
-    printf("Iniciar combate: %s com %s (próprio: %d, inimigo: %d)\n", part, enemy_name, self_value, enemy_value);
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Iniciar combate: %s com %s (próprio: %d, inimigo: %d)\n", part, enemy_name, self_value, enemy_value);
     // Código para lidar com o combate
+    fclose(log_file);
 }
 
 /**
@@ -81,7 +100,10 @@ void handle_position_faction(board_t **board, faction_t **factions, char *part, 
     insert_faction(&(*factions), part, 100, 100);
     insert_node(*board, params[0], params[1], NULL, NULL, *factions);
     print_board(*board);
-    printf("\n");
+
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "\n");
+    fclose(log_file);
 }
 
 /**
@@ -100,7 +122,8 @@ void handle_position_faction(board_t **board, faction_t **factions, char *part, 
  *                  params[2] - A coordenada y da posição.
  */
 void handle_position_unit(board_t **board, faction_t **factions, unit_t **units, char *part, int *params) {
-    printf("Inserir unidade %s no tabuleiro em %d, %d.\n", part, params[1], params[2]);
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Inserir unidade %s no tabuleiro em %d, %d.\n", part, params[1], params[2]);
     insert_unit(&(*units), params[1], params[2], part, params[0]);
     insert_node(*board, params[1], params[2], *units, NULL, NULL);
 
@@ -108,15 +131,16 @@ void handle_position_unit(board_t **board, faction_t **factions, unit_t **units,
     sprintf(faction_name, "F%c", part[0]);
     faction_t *faction = get_faction(&(*factions), faction_name);
     if(faction == NULL) {
-        printf("Facção não encontrada.\n");
+        fprintf(log_file, "Facção não encontrada.\n");
         return;
     }
 
     faction->power += 10;
-    printf("A facção %s agora tem %d poder.\n", faction->name, faction->power);
+    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction->name, faction->power);
 
     print_board(*board);
-    printf("\n");
+    fprintf(log_file, "\n");
+    fclose(log_file);
 }
 
 /**
@@ -128,10 +152,11 @@ void handle_position_unit(board_t **board, faction_t **factions, unit_t **units,
  * @param params O array de parâmetros contendo as coordenadas da nova posição.
  */
 void handle_move(board_t *board, unit_t **units, char part[MAX_PART_LEN], int *params) {
-    printf("Mover unidade %s para %d, %d.\n", part, params[1], params[2]);
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Mover unidade %s para %d, %d.\n", part, params[1], params[2]);
     unit_t *unit = get_unit(&(*units), part);
     if(unit == NULL) {
-        printf("Unidade não encontrada.\n");
+        fprintf(log_file, "Unidade não encontrada.\n");
         return;
     }
 
@@ -145,7 +170,8 @@ void handle_move(board_t *board, unit_t **units, char part[MAX_PART_LEN], int *p
     unit->y = params[2];
     
     print_board(board);
-    printf("\n");
+    fprintf(log_file, "\n");
+    fclose(log_file);
 }
 
 /**
@@ -158,17 +184,19 @@ void handle_move(board_t *board, unit_t **units, char part[MAX_PART_LEN], int *p
  * @param params Um array de parâmetros (não utilizado nesta função).
  */
 void handle_collect(faction_t **factions, char part[MAX_PART_LEN]) {
-    printf("Coletar recursos com a unidade %s.\n", part);
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Coletar recursos com a unidade %s.\n", part);
     char faction_name[3];
     sprintf(faction_name, "F%c", part[0]);
     faction_t *faction = get_faction(&(*factions), faction_name);
     if(faction == NULL) {
-        printf("Facção não encontrada.\n");
+        fprintf(log_file, "Facção não encontrada.\n");
         return;
     }
 
     faction->resources += 10;
-    printf("A facção %s agora tem %d recursos.\n", faction->name, faction->resources);
+    fprintf(log_file, "A facção %s agora tem %d recursos.\n", faction->name, faction->resources);
+    fclose(log_file);
 }
 
 /**
@@ -181,24 +209,26 @@ void handle_collect(faction_t **factions, char part[MAX_PART_LEN]) {
  * @param params Um array de dois inteiros representando as coordenadas do edifício no tabuleiro do jogo.
  */
 void handle_building(board_t **board, faction_t **factions, building_t **buildings, char *part, int *params) {
-    printf("Construir um edifício para a facção %s em %d, %d.\n", part, params[0], params[1]);
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Construir um edifício para a facção %s em %d, %d.\n", part, params[0], params[1]);
     insert_building(&(*buildings), params[0], params[1], part, params[0]);
     insert_node(*board, params[0], params[1], NULL, *buildings, NULL);
 
     faction_t *faction = get_faction(&(*factions), part);
     if(faction == NULL) {
-        printf("Facção não encontrada.\n");
+        fprintf(log_file, "Facção não encontrada.\n");
         return;
     }
 
     faction->resources -= 10;
     faction->power += 10;
 
-    printf("A facção %s agora tem %d recursos.\n", faction->name, faction->resources);
-    printf("A facção %s agora tem %d poder.\n", faction->name, faction->power);
+    fprintf(log_file, "A facção %s agora tem %d recursos.\n", faction->name, faction->resources);
+    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction->name, faction->power);
 
     print_board(*board);
-    printf("\n");
+    fprintf(log_file, "\n");
+    fclose(log_file);
 }
 
 /**
@@ -213,11 +243,12 @@ void handle_building(board_t **board, faction_t **factions, building_t **buildin
  * @param params Um array de inteiros representando parâmetros adicionais.
  */
 void handle_defend(faction_t **factions, char part[MAX_PART_LEN]) {
-    printf("Defender: %s\n", part);
+    FILE *log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Defender: %s\n", part);
     faction_t *defending_faction = get_faction(&(*factions), part);
 
     if(defending_faction == NULL) {
-        printf("Facção não encontrada.\n");
+        fprintf(log_file, "Facção não encontrada.\n");
         return;
     }
 
@@ -225,15 +256,25 @@ void handle_defend(faction_t **factions, char part[MAX_PART_LEN]) {
         faction_t *attacking_faction = get_faction(&(*factions), history.attacking_faction);
 
         if(attacking_faction == NULL) {
-            printf("Facção não encontrada.\n");
+            fprintf(log_file, "Facção não encontrada.\n");
             return;
         }
 
         defending_faction->resources += history.stolen_resources;
         attacking_faction->resources -= history.stolen_resources;
 
-        printf("Recursos roubados: %d\n", history.stolen_resources);
-        printf("A facção %s agora tem %d recursos.\n", defending_faction->name, defending_faction->resources);
-        printf("A facção %s agora tem %d recursos.\n", attacking_faction->name, attacking_faction->resources);
+        fprintf(log_file, "Recursos roubados: %d\n", history.stolen_resources);
+        fprintf(log_file, "A facção %s agora tem %d recursos.\n", defending_faction->name, defending_faction->resources);
+        fprintf(log_file, "A facção %s agora tem %d recursos.\n", attacking_faction->name, attacking_faction->resources);
     }
+    fclose(log_file);
+}
+
+void handle_earn(faction_t **factions, char faction_name[MAX_PART_LEN], int power)
+{
+    FILE *log_file = fopen("saida.txt", "a");
+    faction_t* faction = get_faction(&(*factions), faction_name);
+    faction->power = power;
+    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction->name, faction->power);
+    fclose(log_file);
 }

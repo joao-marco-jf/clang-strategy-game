@@ -144,6 +144,19 @@ int read_defend(FILE *file, int *params) {
     return fscanf(file, "%i %i", &params[0], &params[1]) == 2 ? 0 : 1;
 }
 
+int read_win(FILE *file, int* type_a, char name_b[15], int* type_b)
+{
+    return fscanf(file, "%i %s %i", &(*type_a), name_b, &(*type_b));
+}
+int read_lose(FILE *file, int* type_a, char name_b[15], int* type_b)
+{
+    return fscanf(file, "%i %s %i", &(*type_a), name_b, &(*type_b));
+}
+int read_earn(FILE *file, int* param)
+{
+    return fscanf(file, "%i", param) == 1 ? 0 : 1;
+}
+
 /**
  * @brief Lê todos os dados do arquivo e processa as ações correspondentes.
  *
@@ -151,6 +164,9 @@ int read_defend(FILE *file, int *params) {
  * @return 0 em caso de sucesso, 1 em caso de erro.
  */
 int read_all_file(FILE *file) {
+    FILE *log_file = fopen("saida.txt", "w+");
+    fclose(log_file);
+
     int rows, columns;
     if (read_dimensions(file, &rows, &columns) != 0) {
         printf("Falha ao ler as dimensões do tabuleiro.\n");
@@ -184,7 +200,7 @@ int read_all_file(FILE *file) {
         if (strcmp(action, "alianca") == 0) {
             char faction[MAX_FACTION_NAME_LEN];
             if (read_alliances(file, faction) == 0) {
-                handle_alliance(part, faction);
+                handle_alliance(&factions, part, faction);
             }
         } else if (strcmp(action, "ataca") == 0) {
             char param[MAX_FACTION_NAME_LEN];
@@ -192,18 +208,28 @@ int read_all_file(FILE *file) {
             if (read_attack(file, param, params) == 0) {
                 handle_attack(&factions, part, param);
             }
-        } else if (
-            strcmp(action, "combate") == 0 ||
-            strcmp(action, "ganha") == 0 ||
-            strcmp(action, "perde") == 0 ||
-            strcmp(action, "vence") == 0
-        ) {
+        } else if (strcmp(action, "combate") == 0) {
             char enemy_name[MAX_FACTION_NAME_LEN];
             int self_value, enemy_value;
             if (read_combat(file, enemy_name, &self_value, &enemy_value) == 0) {
                 handle_combat(part, enemy_name, self_value, enemy_value);
             }
-        } else if (strcmp(action, "pos") == 0) {
+        } 
+        else if (strcmp(action, "ganha") == 0){
+            int power;
+            if(read_earn(file, &power) == 0){
+                handle_earn(&factions, part, power);
+            }
+        }
+        else if (strcmp(action, "perde") == 0)
+        {
+            
+        }
+        else if(strcmp(action, "vence") == 0)
+        {
+
+        }
+        else if (strcmp(action, "pos") == 0) {
             int params[MAX_PARAMS];
             if (num_factions > 0) {
                 if (read_position_faction(file, params) == 0) {
@@ -239,6 +265,27 @@ int read_all_file(FILE *file) {
     }
 
     fclose(file);
+
+    faction_t *winner = factions;
+    while(factions != NULL){
+        if(
+            (
+                factions->power > 0 && 
+                factions->power > winner->power
+            ) ||
+            (
+                factions->resources > 0 &&
+                factions->resources > winner->resources
+            )
+        ){
+            winner = factions;
+        }
+        factions = factions->next;
+    }
+
+    log_file = fopen("saida.txt", "a");
+    fprintf(log_file, "Vencedor: %s\n", winner->name);
+
     free_factions(&factions);
     free_buildings(&buildings);
     free_units(&units);

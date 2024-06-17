@@ -116,17 +116,19 @@ void free_board(board_t *board){
 }
 
 void print_board(board_t *board){
+    FILE *log_file = fopen("saida.txt", "a");
     for(int i = 0; i < board->lines; i++){
         for(int j = 0; j < board->columns; j++){
-            if(get_unit_board(board, i, j) && get_building_board(board, i, j) && get_faction_board(board, i, j)) printf("[FBU]");
-            else if(get_unit_board(board, i, j) && get_building_board(board, i, j)) printf("[ BU]");
-            else if(get_unit_board(board, i, j) && get_faction_board(board, i, j)) printf("[FU ]");
-            else if(get_building_board(board, i, j) && get_faction_board(board, i, j)) printf("[F B]");
-            else if(get_faction_board(board, i, j)) printf("[F  ]");
-            else if(get_building_board(board, i, j)) printf("[  B]");
-            else if(get_unit_board(board, i, j)) printf("[ U ]");
-            else printf("[   ]");
+            if(get_unit_board(board, i, j) && get_building_board(board, i, j) && get_faction_board(board, i, j)) fprintf(log_file, "[FBU]");
+            else if(get_unit_board(board, i, j) && get_building_board(board, i, j)) fprintf(log_file, "[ BU]");
+            else if(get_unit_board(board, i, j) && get_faction_board(board, i, j)) fprintf(log_file, "[FU ]");
+            else if(get_building_board(board, i, j) && get_faction_board(board, i, j)) fprintf(log_file, "[F B]");
+            else if(get_faction_board(board, i, j)) fprintf(log_file, "[F  ]");
+            else if(get_building_board(board, i, j)) fprintf(log_file, "[  B]");
+            else if(get_unit_board(board, i, j)) fprintf(log_file, "[ U ]");
+            else fprintf(log_file, "[   ]");
         }
-        printf("\n");
+        fprintf(log_file, "\n");
     }
+    fclose(log_file);
 }

@@ -54,6 +54,6 @@ install_cunit:
 
 # Limpeza
 clean:
-	rm -rf $(OUT_DIR) $(BIN_DIR)
+	rm -rf $(OUT_DIR) $(BIN_DIR) ./saida.txt
 
 .PHONY: all clean test install_cunit

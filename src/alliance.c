@@ -34,13 +34,32 @@ void insert_alliance(alliance_t **alliances, char name[15]){
     *alliances = new_alliance;
 }
 
-void free_alliances(alliance_t **alliances){
+/**
+ * @brief Libera a memória alocada para a lista de alianças.
+ *
+ * A função `free_alliances` percorre a lista encadeada de alianças,
+ * liberando a memória alocada para cada nó da lista e ajustando os
+ * ponteiros necessários.
+ *
+ * @param alliances Ponteiro para um ponteiro para o início da lista de alianças.
+ *                  Ao final da função, o ponteiro `alliances` é ajustado para
+ *                  apontar para `NULL`, indicando que a lista está vazia.
+ *
+ * @note Certifique-se de que o ponteiro `alliances` aponta para a lista de alianças
+ *       corretamente. A função assume que cada nó da lista de alianças foi alocado
+ *       dinamicamente (por exemplo, com `malloc`) e precisa ser liberado com `free`.
+ *       Após chamar esta função, o ponteiro `alliances` é ajustado para `NULL`,
+ *       indicando que a lista está vazia e os recursos foram liberados.
+ */
+void free_alliances(alliance_t **alliances) {
     alliance_t *current = *alliances;
     alliance_t *next = NULL;
-    while(current != NULL){
+    
+    while (current != NULL) {
         next = current->next;
-        free(current);
-        current = next;
+        free(current);  // Libera a memória alocada para o nó atual
+        current = next; // Avança para o próximo nó
     }
-    *alliances = NULL;
+    
+    *alliances = NULL; // Define o ponteiro de início da lista como NULL
 }

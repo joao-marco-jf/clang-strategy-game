@@ -127,149 +127,150 @@ void free_board(board_t *board){
     }
 }
 
-void print_board(board_t *board){
-    FILE *log_file = fopen("saida.txt", "a");
+void print_board(FILE *log, board_t *board){
+    fprintf(log, "_____________________________________________________________\n");
     for(int i = 0; i < board->lines; i++){
         for(int j = 0; j < board->columns; j++){
+            fprintf(log, "|  ");
             if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&
                 get_unit2_board(board, i, j) && 
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F3B]");
+            ) fprintf(log, "F3B ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F2B]");
+            ) fprintf(log, "F2B");
             else if(
                 get_unit1_board(board, i, j) && 
                 get_unit2_board(board, i, j) &&
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F2B]");
+            ) fprintf(log, "F2B");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit2_board(board, i, j) &&
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F2B]");
+            ) fprintf(log, "F2B");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&
                 get_unit2_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F3 ]");
+            ) fprintf(log, "F3 ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F2 ]");
+            ) fprintf(log, "F2 ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit2_board(board, i, j) &&
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F2 ]");
+            ) fprintf(log, "F2 ");
             else if(
                 get_unit1_board(board, i, j) && 
                 get_unit2_board(board, i, j) &&
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F2 ]");
+            ) fprintf(log, "F2 ");
             else if(
                 get_unit_board(board, i, j) &&
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[FU ]");
+            ) fprintf(log, "FU ");
             else if(
                 get_unit1_board(board, i, j) &&
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[FU ]");
+            ) fprintf(log, "FU ");
             else if(
                 get_unit2_board(board, i, j) &&
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[FU ]");
+            ) fprintf(log, "FU ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[ 2B]");
+            ) fprintf(log, " 2B");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit2_board(board, i, j) &&
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[ 2B]");
+            ) fprintf(log, " 2B");
             else if(
                 get_unit1_board(board, i, j) && 
                 get_unit2_board(board, i, j) &&
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[ 2B]");
+            ) fprintf(log, " 2B");
             else if(
                 get_unit_board(board, i, j) && 
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[ UB]");
+            ) fprintf(log, " UB");
             else if(
                 get_unit1_board(board, i, j) && 
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[ UB]");
+            ) fprintf(log, " UB");
             else if(
                 get_unit2_board(board, i, j) && 
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[ UB]");
+            ) fprintf(log, " UB");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&
                 get_unit2_board(board, i, j)
-            ) fprintf(log_file, "[ 3 ]");
+            ) fprintf(log, " 3 ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j)
-            ) fprintf(log_file, "[ 2 ]");
+            ) fprintf(log, " 2 ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_unit2_board(board, i, j)
-            ) fprintf(log_file, "[ 2 ]");
+            ) fprintf(log, " 2 ");
             else if(
                 get_unit1_board(board, i, j) && 
                 get_unit2_board(board, i, j)
-            ) fprintf(log_file, "[ 2 ]");
+            ) fprintf(log, " 2 ");
             else if(
                 get_unit_board(board, i, j) && 
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[FUB]");
+            ) fprintf(log, "FUB");
             else if(
                 get_unit1_board(board, i, j) && 
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[FUB]");
+            ) fprintf(log, "FUB");
             else if(
                 get_unit2_board(board, i, j) && 
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[FUB]");
+            ) fprintf(log, "FUB");
             else if(
                 get_building_board(board, i, j) && 
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F B]");
+            ) fprintf(log, "F B");
             else if(
                 get_faction_board(board, i, j)
-            ) fprintf(log_file, "[F  ]");
+            ) fprintf(log, "F  ");
             else if(
                 get_building_board(board, i, j)
-            ) fprintf(log_file, "[  B]");
+            ) fprintf(log, "  B");
             else if(
                 get_unit_board(board, i, j)
-            ) fprintf(log_file, "[ U ]");
+            ) fprintf(log, " U ");
             else if(
                 get_unit1_board(board, i, j)
-            ) fprintf(log_file, "[ U ]");
+            ) fprintf(log, " U ");
             else if(
                 get_unit2_board(board, i, j)
-            ) fprintf(log_file, "[ U ]");
-            else fprintf(log_file, "[   ]");
+            ) fprintf(log, " U ");
+            else fprintf(log, "   ");
         }
-        fprintf(log_file, "\n");
+        fprintf(log, "|\n");
+        fprintf(log, "|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|\n");
     }
-    fclose(log_file);
 }

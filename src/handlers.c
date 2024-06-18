@@ -286,11 +286,21 @@ void handle_defend(faction_t **factions, char part[MAX_PART_LEN]) {
     fclose(log_file);
 }
 
+/**
+ * @brief Atualiza o poder de uma facção específica e registra a mudança em um arquivo de log.
+ *
+ * A função `handle_earn` encontra a facção com o nome especificado na lista encadeada `factions`,
+ * atualiza o seu poder para o valor fornecido e registra essa mudança em um arquivo de log "saida.txt".
+ *
+ * @param factions Ponteiro para o ponteiro da lista encadeada de facções.
+ * @param faction_name Nome da facção cujo poder será atualizado.
+ * @param power Novo valor de poder a ser atribuído à facção.
+ */
 void handle_earn(faction_t **factions, char faction_name[MAX_PART_LEN], int power)
 {
-    FILE *log_file = fopen("saida.txt", "a");
-    faction_t* faction = get_faction(&(*factions), faction_name);
-    faction->power = power;
-    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction->name, faction->power);
-    fclose(log_file);
+    FILE *log_file = fopen("saida.txt", "a");   // Abre o arquivo de log para adicionar texto
+    faction_t* faction = get_faction(&(*factions), faction_name); // Encontra a facção com o nome especificado
+    faction->power = power;                     // Atualiza o poder da facção para o novo valor
+    fprintf(log_file, "A facção %s agora tem %d poder.\n", faction->name, faction->power); // Registra a mudança no arquivo de log
+    fclose(log_file);                           // Fecha o arquivo de log após a operação
 }

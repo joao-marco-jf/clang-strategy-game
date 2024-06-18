@@ -350,6 +350,7 @@ void print_board(FILE *log, board_t *board){
     fprintf(log, "_____________________________________________________________\n");
     for(int i = 0; i < board->lines; i++){
         for(int j = 0; j < board->columns; j++){
+            fprintf(log, "|  ");
             if(
                 get_unit_board(board, i, j) && 
                 get_unit1_board(board, i, j) &&

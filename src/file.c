@@ -575,6 +575,15 @@ int read_all_file(FILE *file) {
         current_faction = current_faction->next;
     }
 
+    if (winner != NULL) {
+        // Aqui você pode fazer o que for necessário com o vencedor, por exemplo, imprimir no log:
+        fprintf(log, "A facção vencedora é: %s\n", winner->name);
+        fprintf(log, "Poder: %d\n", winner->power);
+        fprintf(log, "Recursos: %d\n\n", winner->resources);
+    } else {
+        // Caso nenhuma facção tenha poder ou recursos positivos
+        fprintf(log, "Nenhuma facção tem poder ou recursos positivos. Não há vencedor.\n\n");
+    }
 
     fprintf(log, "=== Vitória alcançada ===\n");
     fprintf(log, "Facção %s alcançou a vitória!\n", part);

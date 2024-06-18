@@ -164,8 +164,11 @@ int read_earn(FILE *file, int* param)
  * @return 0 em caso de sucesso, 1 em caso de erro.
  */
 int read_all_file(FILE *file) {
-    FILE *log_file = fopen("saida.txt", "w+");
-    fclose(log_file);
+    FILE *log = fopen("saida.txt", "w+");
+    fclose(log);
+
+    log = fopen("saida.txt", "a");
+    
 
     int rows, columns;
     if (read_dimensions(file, &rows, &columns) != 0) {
@@ -174,6 +177,14 @@ int read_all_file(FILE *file) {
     }
 
     board_t *board = create_board(rows, columns);
+    int map[columns][rows];
+    for(int i = 0; i < columns; i++){
+        for(int j = 0; j < rows; j++){
+            int random = rand() % 10;
+
+            map[i][j] = ((random >= 0 && random < 6) ? 0 : (random >= 6 && random < 9) ? 1 : 2);
+        }
+    }
 
     faction_t *factions = NULL;
     building_t *buildings = NULL;
@@ -200,25 +211,25 @@ int read_all_file(FILE *file) {
         if (strcmp(action, "alianca") == 0) {
             char faction[MAX_FACTION_NAME_LEN];
             if (read_alliances(file, faction) == 0) {
-                handle_alliance(&factions, part, faction);
+                handle_alliance(log, &factions, part, faction);
             }
         } else if (strcmp(action, "ataca") == 0) {
             char param[MAX_FACTION_NAME_LEN];
             int params[MAX_PARAMS];
             if (read_attack(file, param, params) == 0) {
-                handle_attack(&factions, part, param);
+                handle_attack(log, &factions, part, param);
             }
         } else if (strcmp(action, "combate") == 0) {
             char enemy_name[MAX_FACTION_NAME_LEN];
             int self_value, enemy_value;
             if (read_combat(file, enemy_name, &self_value, &enemy_value) == 0) {
-                handle_combat(part, enemy_name, self_value, enemy_value);
+                handle_combat(log,board, &units, part, enemy_name);
             }
         } 
         else if (strcmp(action, "ganha") == 0){
             int power;
             if(read_earn(file, &power) == 0){
-                handle_earn(&factions, part, power);
+                handle_earn(log, &factions, part, power);
             }
         }
         else if (strcmp(action, "perde") == 0)
@@ -233,63 +244,81 @@ int read_all_file(FILE *file) {
             int params[MAX_PARAMS];
             if (num_factions > 0) {
                 if (read_position_faction(file, params) == 0) {
-                    handle_position_faction(&board, &factions, part, params);
+                    handle_position_faction(log, &board, &factions, part, params);
                     num_factions--;
                 }
             } else {
                 if (read_position_unit(file, params) == 0) {
-                    handle_position_unit(&board, &factions, &units, part, params);
+                    handle_position_unit(log, &board, &factions, &units, part, params);
                 }
             }
         } else if (strcmp(action, "move") == 0) {
             int params[MAX_PARAMS];
             if (read_move(file, params) == 0) {
-                handle_move(board, &units, part, params);
+                handle_move(log, board, &units, part, params);
             }
         } else if (strcmp(action, "coleta") == 0) {
             int params[MAX_PARAMS];
             if (read_collect(file, params) == 0) {
-                handle_collect(&factions, part);
+                handle_collect(log, &factions, &units, columns, rows, map, part);
             }
         } else if (strcmp(action, "constroi") == 0) {
             int params[MAX_PARAMS];
             if (read_building(file, params) == 0) {
-                handle_building(&board, &factions, &buildings, part, params);
+                handle_building(log, &board, &factions, &buildings, part, params);
             }
         } else if (strcmp(action, "defende") == 0) {
             int params[MAX_PARAMS];
             if (read_defend(file, params) == 0) {
-                handle_defend(&factions, part);
+                handle_defend(log, &factions, part);
             }
+        }
+
+        fprintf(log, "=== Fim do turno ===\n");
+        faction_t *temp = factions;
+        while(temp != NULL){
+            fprintf(log, "Turno do jogador %s finalizado.\n", temp->name);
+            fprintf(log, "Recursos atualizados: %d.\n", temp->resources);
+            fprintf(log, "Poder atualizado: %d.\n", temp->power);
+            fprintf(log, "\n");
+            temp = temp->next;
         }
     }
 
     fclose(file);
 
-    faction_t *winner = factions;
-    while(factions != NULL){
-        if(
-            (
-                factions->power > 0 && 
-                factions->power > winner->power
-            ) ||
-            (
-                factions->resources > 0 &&
-                factions->resources > winner->resources
-            )
-        ){
-            winner = factions;
+    faction_t *winner = NULL;
+    faction_t *current_faction = factions;
+
+    while (current_faction != NULL) {
+        // Verifica se ainda não há vencedor ou se a facção atual supera o vencedor atual
+        if (winner == NULL || current_faction->power + current_faction->resources > winner->power + winner->resources) {
+            winner = current_faction;
         }
-        factions = factions->next;
+        current_faction = current_faction->next;
     }
 
-    log_file = fopen("saida.txt", "a");
-    fprintf(log_file, "Vencedor: %s\n", winner->name);
+    if (winner != NULL) {
+        // Aqui você pode fazer o que for necessário com o vencedor, por exemplo, imprimir no log:
+        fprintf(log, "A facção vencedora é: %s\n", winner->name);
+        fprintf(log, "Poder: %d\n", winner->power);
+        fprintf(log, "Recursos: %d\n\n", winner->resources);
+    } else {
+        // Caso nenhuma facção tenha poder ou recursos positivos
+        fprintf(log, "Nenhuma facção tem poder ou recursos positivos. Não há vencedor.\n\n");
+    }
+
+    fprintf(log, "=== Vitória alcançada ===\n");
+    fprintf(log, "Facção %s alcançou a vitória!\n", part);
+    fprintf(log, "Parabéns!\n\n");
+
+    fclose(log);
 
     free_factions(&factions);
     free_buildings(&buildings);
     free_units(&units);
     free_alliances(&alliances);
     free_board(board);
+    free(board);
     return 0;
 }

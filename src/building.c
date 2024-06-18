@@ -36,10 +36,24 @@ void insert_building(building_t **buildings, int x, int y, char name[15],  build
     *buildings = new_building;
 }
 
+/**
+ * @brief Libera a memória alocada para a lista encadeada de construções.
+ *
+ * A função `free_buildings` libera a memória alocada para a lista encadeada de
+ * construções (`building_t`). Ela percorre a lista encadeada a partir do início
+ * indicado por `*buildings`, libera cada nó da lista e atualiza o ponteiro `*buildings`
+ * para apontar para NULL após liberar todos os nós.
+ *
+ * @param buildings Ponteiro para o ponteiro da lista encadeada de construções.
+ *                  Após a execução da função, `*buildings` será NULL.
+ * 
+ * @note Esta função não retorna nenhum valor. Ela libera a memória alocada dinamicamente
+ *       para cada nó da lista encadeada de construções, incluindo o próprio nó.
+ */
 void free_buildings(building_t **buildings){
     while(*buildings != NULL){
-        building_t *temp = *buildings;
-        *buildings = (*buildings)->next;
-        free(temp);
+        building_t *temp = *buildings;      // Armazena o nó atual em `temp`
+        *buildings = (*buildings)->next;    // Atualiza `*buildings` para o próximo nó
+        free(temp);                         // Libera a memória do nó atual
     }
 }

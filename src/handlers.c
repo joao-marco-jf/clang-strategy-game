@@ -548,29 +548,15 @@ void handle_defend(FILE *log, faction_t **factions, char part[MAX_PART_LEN]) {
 
 
 /**
-    @brief Atualiza o poder de uma facção e registra essa alteração em um arquivo de log.
-    Esta função busca uma facção específica a partir do nome fornecido, atualiza o valor de poder
-    dessa facção e registra essa alteração em um arquivo de log.
-    @param log Um ponteiro para um arquivo onde o log será escrito. Deve estar previamente aberto.
-    @param factions Um ponteiro para um ponteiro da lista de facções. A função assumirá que essa lista está corretamente inicializada.
-    @param faction_name O nome da facção cujo poder será atualizado. Deve ser uma string com no máximo MAX_PART_LEN caracteres.
-    @param power O novo valor de poder a ser atribuído à facção especificada.
-    @pre O arquivo de log deve estar aberto para escrita.
-    @pre A lista de facções deve estar inicializada e não nula.
-    @pre O nome da facção deve ser uma string válida e existente na lista de facções.
-    @pre O valor de poder deve ser um número válido a ser atribuído à facção.
-    @post O valor de poder da facção especificada será atualizado com o novo valor.
-    @post Um registro será adicionado ao arquivo de log informando a alteração do poder.
-    @param log
-    Um ponteiro para um arquivo onde o log será escrito. Este arquivo deve estar previamente aberto para escrita.
-    @param factions
-    Um ponteiro para um ponteiro para a lista de facções. A lista de facções deve estar corretamente inicializada.
-    @param faction_name
-    O nome da facção cujo poder será atualizado. Deve ser uma string com no máximo MAX_PART_LEN caracteres.
-    @param power
-    O valor de poder a ser agregado ao poder de uma facção especificada.
-    @return void
-*/
+ * @brief Atualiza o poder de uma facção específica e registra a mudança em um arquivo de log.
+ *
+ * A função `handle_earn` encontra a facção com o nome especificado na lista encadeada `factions`,
+ * atualiza o seu poder para o valor fornecido e registra essa mudança em um arquivo de log "saida.txt".
+ *
+ * @param factions Ponteiro para o ponteiro da lista encadeada de facções.
+ * @param faction_name Nome da facção cujo poder será atualizado.
+ * @param power Novo valor de poder a ser atribuído à facção.
+ */
 void handle_earn(FILE *log, faction_t **factions, char faction_name[MAX_PART_LEN], int power)
 {
     faction_t* faction = get_faction(&(*factions), faction_name);

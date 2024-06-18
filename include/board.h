@@ -9,6 +9,12 @@
 #include "building.h"
 #include "unit.h"
 
+typedef enum node_e{
+    PLANICE = 0,
+    FLORESTA = 1,
+    MONTANHA = 2
+} node_e;
+
 typedef struct node_t{
     int line;
     int col;
@@ -36,6 +42,6 @@ unit_t *get_unit1_board(board_t *board, int line, int col);
 unit_t *get_unit2_board(board_t *board, int line, int col);
 void remove_node(board_t *board_t, int row, int col);
 void free_board(board_t *board);
-void print_board(board_t *board);
+void print_board(FILE *log, board_t *board);
 
 #endif
